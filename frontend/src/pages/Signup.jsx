@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User as UserIcon, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, ArrowRight, AlertCircle, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Signup = () => {
@@ -37,113 +37,154 @@ export const Signup = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="glass-panel p-8 rounded-3xl shadow-2xl border border-white/10">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white tracking-tight">Create Account</h1>
-            <p className="text-sm text-slate-400 mt-2">
-              Join EventSnap to create and share event photo galleries
+    <div className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto flex flex-col justify-center">
+      {/* Mint Accent Banner per DESIGN.md */}
+      <div className="block-mint rounded-2xl p-4 sm:p-5 mb-8 border border-black/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#B2F1DE]" />
+          </div>
+          <div>
+            <span className="eyebrow-mono text-[10px] block text-neutral-800">Privacy & Security First</span>
+            <p className="text-xs text-black font-normal">
+              Face rekognition data & photo collections strictly adhere to automatic retention timers.
             </p>
           </div>
+        </div>
+        <span className="self-start sm:self-center px-3 py-1 rounded-full bg-black text-white text-[10px] font-mono font-medium tracking-wider whitespace-nowrap">
+          SECURE STORAGE
+        </span>
+      </div>
 
-          {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400 text-xs">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <span>{error}</span>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        {/* Left Editorial Text */}
+        <div className="md:col-span-5 space-y-4">
+          <span className="eyebrow-mono">Get Started Today</span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-[-0.03em] text-black leading-tight">
+            Create your event account.
+          </h1>
+          <p className="text-sm text-neutral-600 font-normal leading-relaxed">
+            Host private gatherings, generate PIN codes for your attendees, and unlock smart face-delivered photo albums.
+          </p>
+
+          <div className="pt-2 hidden md:block">
+            <div className="p-4 rounded-2xl bg-[#f5f5f7] border border-[#e5e5e5] space-y-2">
+              <span className="caption-mono block">Organizers & Attendees</span>
+              <p className="text-xs text-neutral-700">
+                Single sign-on architecture allows both hosting your own celebrations and joining guest galleries.
+              </p>
             </div>
-          )}
+          </div>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <UserIcon className="w-4 h-4" />
-                </div>
-                <input
-                  id="input-signup-name"
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Alex Morgan"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
-                />
+        {/* Right Form Card */}
+        <div className="md:col-span-7">
+          <div className="card-hairline p-8 sm:p-10 shadow-sm">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-black tracking-tight">Create Account</h2>
+              <p className="text-xs text-neutral-500 mt-1">Join EventSnap in just a few seconds</p>
+            </div>
+
+            {error && (
+              <div className="mb-6 p-3.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-red-700 text-xs">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span>{error}</span>
               </div>
-            </div>
+            )}
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Mail className="w-4 h-4" />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="eyebrow-mono block mb-1.5">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                    <UserIcon className="w-4 h-4" />
+                  </div>
+                  <input
+                    id="input-signup-name"
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Alex Morgan"
+                    className="input-figma pl-10"
+                  />
                 </div>
-                <input
-                  id="input-signup-email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="alex@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
-                />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Lock className="w-4 h-4" />
+              <div>
+                <label className="eyebrow-mono block mb-1.5">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <input
+                    id="input-signup-email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="alex@example.com"
+                    className="input-figma pl-10"
+                  />
                 </div>
-                <input
-                  id="input-signup-password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 6 characters"
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-900/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
-                />
+              </div>
+
+              <div>
+                <label className="eyebrow-mono block mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                  <input
+                    id="input-signup-password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="At least 6 characters"
+                    className="input-figma pl-10 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-black"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="pt-2">
                 <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300"
+                  id="btn-signup-submit"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary w-full py-3 text-sm"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {isSubmitting ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Create Account</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
               </div>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-[#f0f0f0] text-center text-xs text-neutral-600">
+              Already have an account?{' '}
+              <Link to="/login" className="text-black font-semibold underline underline-offset-4 hover:opacity-75">
+                Sign in
+              </Link>
             </div>
-
-            <button
-              id="btn-signup-submit"
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full mt-2 py-3 px-4 gradient-btn text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-brand-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              {isSubmitting ? (
-                <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center text-xs text-slate-400">
-            Already have an account?{' '}
-            <Link to="/login" className="text-brand-400 hover:text-brand-300 font-semibold underline underline-offset-4">
-              Sign in
-            </Link>
           </div>
         </div>
       </div>
