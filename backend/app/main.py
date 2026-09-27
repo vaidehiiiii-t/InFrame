@@ -39,6 +39,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+import os
+from fastapi.staticfiles import StaticFiles
+
+# Ensure upload directory exists and mount static file serving for photo uploads
+os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads")
+
 # Include API v1 router
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
@@ -49,7 +56,7 @@ async def root():
         "app": settings.PROJECT_NAME,
         "version": settings.VERSION,
         "status": "healthy",
-        "milestone": "M1 (Auth + Event Creation + PIN Join)",
+        "milestone": "M2 (Photo Upload & Event Gallery)",
     }
 
 

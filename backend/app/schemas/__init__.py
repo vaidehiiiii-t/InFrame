@@ -9,6 +9,8 @@ from app.schemas.event import (
     EventJoinResponse,
 )
 
+from app.schemas.photo import PhotoRead, PhotoUploadResponse
+
 __all__ = [
     "UserBase",
     "UserCreate",
@@ -23,4 +25,6 @@ __all__ = [
     "EventDetailResponse",
     "EventMemberResponse",
     "EventJoinResponse",
+    "PhotoRead",
+    "PhotoUploadResponse",
 ]

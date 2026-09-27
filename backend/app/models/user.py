@@ -19,6 +19,7 @@ class User(Base):
     # Relationships
     hosted_events = relationship("Event", back_populates="host", cascade="all, delete-orphan")
     memberships = relationship("EventMember", back_populates="user", cascade="all, delete-orphan")
+    uploaded_photos = relationship("Photo", back_populates="uploader", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         return f"<User {self.email}>"

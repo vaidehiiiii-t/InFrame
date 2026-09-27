@@ -21,6 +21,7 @@ class Event(Base):
     # Relationships
     host = relationship("User", back_populates="hosted_events")
     members = relationship("EventMember", back_populates="event", cascade="all, delete-orphan")
+    photos = relationship("Photo", back_populates="event", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         return f"<Event {self.name} (PIN: {self.pin_code})>"

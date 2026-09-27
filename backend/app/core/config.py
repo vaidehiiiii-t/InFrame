@@ -37,6 +37,11 @@ class Settings(BaseSettings):
     JOIN_RATE_LIMIT_ATTEMPTS: int = 5
     JOIN_RATE_LIMIT_WINDOW_SECONDS: int = 3600  # 1 hour
 
+    # Photo Upload Settings (Milestone 2)
+    MAX_PHOTO_SIZE_BYTES: int = 15 * 1024 * 1024  # 15 MB
+    ALLOWED_IMAGE_TYPES: List[str] = ["image/jpeg", "image/png", "image/webp", "image/jpg"]
+    UPLOAD_DIR: str = str((_BACKEND_DIR / "uploads").resolve())
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:

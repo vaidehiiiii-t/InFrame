@@ -52,6 +52,8 @@ postgres_data/
 *.db-wal
 eventsnap.db
 backend/eventsnap.db
+uploads/
+backend/uploads/
 
 # IDEs, Editors & OS Files
 .vscode/
