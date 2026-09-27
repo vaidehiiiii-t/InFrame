@@ -13,88 +13,112 @@ export const Navbar = ({ onOpenCreateModal, onOpenJoinModal }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand / Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-pink-500 flex items-center justify-center shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform duration-200">
-            <Camera className="w-5 h-5 text-white" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tight text-white flex items-center gap-1">
-              Event<span className="text-brand-400">Snap</span>
-            </span>
-            <span className="text-[10px] text-slate-400 font-medium tracking-wider uppercase -mt-1">
-              Smart Photo Delivery
-            </span>
-          </div>
-        </Link>
-
-        {/* Action Controls & Navigation */}
-        <div className="flex items-center gap-3">
-          {isAuthenticated ? (
-            <>
-              {/* Join with PIN button */}
-              <button
-                id="btn-nav-join"
-                onClick={onOpenJoinModal}
-                className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 rounded-lg transition-all"
-              >
-                <KeyRound className="w-3.5 h-3.5 text-brand-400" />
-                <span>Join with PIN</span>
-              </button>
-
-              {/* Create Event button */}
-              <button
-                id="btn-nav-create"
-                onClick={onOpenCreateModal}
-                className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white gradient-btn rounded-lg shadow-md shadow-brand-500/20 hover:shadow-brand-500/40 transition-all"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Create Event</span>
-              </button>
-
-              {/* User Dropdown / Info */}
-              <div className="flex items-center gap-3 pl-2 border-l border-slate-800">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-brand-900/60 border border-brand-500/40 flex items-center justify-center text-brand-300 font-bold text-xs">
-                    {user?.name ? user.name.charAt(0).toUpperCase() : <UserIcon className="w-4 h-4" />}
-                  </div>
-                  <span className="hidden md:inline text-xs font-medium text-slate-300">
-                    {user?.name}
-                  </span>
-                </div>
-
-                <button
-                  id="btn-nav-logout"
-                  onClick={handleLogout}
-                  title="Log out"
-                  className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link
-                to="/login"
-                id="link-login"
-                className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
-              >
-                Log In
-              </Link>
-              <Link
-                to="/signup"
-                id="link-signup"
-                className="px-4 py-2 text-xs font-semibold text-white gradient-btn rounded-lg transition-all shadow-md shadow-brand-500/20"
-              >
-                Sign Up
-              </Link>
+    <>
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-[#e5e5e5]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          {/* Brand Wordmark & Tag */}
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center transition-transform group-hover:scale-105">
+              <Camera className="w-4 h-4" />
             </div>
-          )}
+            <div className="flex flex-col">
+              <span className="text-lg font-bold tracking-[-0.04em] text-black leading-tight">
+                Event<span className="font-extrabold">Snap</span>
+              </span>
+              <span className="eyebrow-mono text-[9px] -mt-0.5 text-neutral-500">
+                Figma-Inspired Delivery
+              </span>
+            </div>
+          </Link>
+
+          {/* Action Controls & Pill Navigation */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            {isAuthenticated ? (
+              <>
+                {/* Secondary Pill CTA: Join with PIN */}
+                <button
+                  id="btn-nav-join"
+                  onClick={onOpenJoinModal}
+                  className="btn-secondary text-xs py-1.5 px-4 inline-flex items-center gap-1.5"
+                >
+                  <KeyRound className="w-3.5 h-3.5 text-black" />
+                  <span>Join with PIN</span>
+                </button>
+
+                {/* Primary Pill CTA: Create Event */}
+                <button
+                  id="btn-nav-create"
+                  onClick={onOpenCreateModal}
+                  className="btn-primary text-xs py-1.5 px-4 inline-flex items-center gap-1.5"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Create Event</span>
+                </button>
+
+                {/* User Dropdown / Profile Initial */}
+                <div className="flex items-center gap-2 pl-2 border-l border-[#e5e5e5]">
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-8 h-8 rounded-full bg-[#f5f5f7] border border-[#e5e5e5] flex items-center justify-center text-black font-semibold text-xs"
+                      title={user?.name || 'Account'}
+                    >
+                      {user?.name ? user.name.charAt(0).toUpperCase() : <UserIcon className="w-3.5 h-3.5 text-black" />}
+                    </div>
+                    <span className="hidden md:inline text-xs font-medium text-black">
+                      {user?.name}
+                    </span>
+                  </div>
+
+                  <button
+                    id="btn-nav-logout"
+                    onClick={handleLogout}
+                    title="Log out"
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-500 hover:text-black hover:bg-[#f5f5f7] transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  id="link-login"
+                  className="btn-secondary text-xs py-1.5 px-4 inline-flex items-center"
+                >
+                  Log In
+                </Link>
+                <Link
+                  to="/signup"
+                  id="link-signup"
+                  className="btn-primary text-xs py-1.5 px-4 inline-flex items-center"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Marquee Ribbon per DESIGN.md: thin black ribbon under nav */}
+      <div className="w-full bg-black text-white h-8 flex items-center justify-between px-4 sm:px-8 text-[11px] font-mono uppercase tracking-[0.06em] overflow-hidden whitespace-nowrap border-b border-[#222]">
+        <div className="flex items-center gap-6 animate-pulse-slow">
+          <span className="flex items-center gap-1.5 text-neutral-300">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#D2F46E]"></span>
+            Face Rekognition Photo Hub
+          </span>
+          <span className="text-neutral-500 hidden sm:inline">•</span>
+          <span className="hidden sm:inline text-neutral-300">Instant 8-Character PIN Access</span>
+          <span className="text-neutral-500 hidden md:inline">•</span>
+          <span className="hidden md:inline text-neutral-300">Zero App Install Required</span>
+          <span className="text-neutral-500 hidden lg:inline">•</span>
+          <span className="hidden lg:inline text-neutral-300">Encrypted AWS S3 Architecture</span>
+        </div>
+        <div className="hidden sm:flex items-center gap-2 text-[10px] text-neutral-400">
+          <span className="px-2 py-0.5 rounded-full bg-white/10 text-white">Milestone 1 Active</span>
         </div>
       </div>
-    </header>
+    </>
   );
 };
