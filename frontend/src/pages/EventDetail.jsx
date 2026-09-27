@@ -11,7 +11,9 @@ import {
   ArrowLeft, 
   ShieldCheck, 
   Camera, 
-  AlertCircle 
+  AlertCircle,
+  Database,
+  Sparkles
 } from 'lucide-react';
 import { eventsApi } from '../api/events';
 import { useAuth } from '../context/AuthContext';
@@ -70,8 +72,8 @@ export const EventDetail = () => {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-brand-500/20 border-t-brand-500 rounded-full animate-spin" />
-          <p className="text-xs text-slate-400">Loading event details...</p>
+          <div className="w-8 h-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+          <p className="caption-mono text-neutral-500">Loading event details...</p>
         </div>
       </div>
     );
@@ -79,17 +81,17 @@ export const EventDetail = () => {
 
   if (error || !event) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <div className="glass-panel p-8 rounded-2xl border border-red-500/20">
-          <AlertCircle className="w-12 h-12 mx-auto text-red-400 mb-3" />
-          <h2 className="text-lg font-bold text-white mb-2">Unable to Load Event</h2>
-          <p className="text-xs text-slate-400 mb-6">{error || 'Event does not exist or you lack access.'}</p>
+      <div className="max-w-xl mx-auto px-4 py-16 text-center">
+        <div className="card-hairline p-8 text-center space-y-4">
+          <AlertCircle className="w-10 h-10 mx-auto text-red-600" />
+          <h2 className="text-xl font-bold text-black tracking-tight">Unable to Load Event</h2>
+          <p className="text-xs text-neutral-600">{error || 'Event does not exist or you lack access.'}</p>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition-colors"
+            className="btn-secondary text-xs py-2 px-5 inline-flex items-center gap-2 mt-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Dashboard</span>
+            <span>Return to Dashboard</span>
           </Link>
         </div>
       </div>
@@ -99,103 +101,100 @@ export const EventDetail = () => {
   const isHost = event.is_host || event.host_id === user?.id;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Back button */}
       <div>
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+          className="btn-secondary text-xs py-1.5 px-4 inline-flex items-center gap-1.5"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Dashboard</span>
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Dashboard</span>
         </Link>
       </div>
 
-      {/* Header Banner */}
-      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-          <div className="space-y-3 max-w-xl">
-            <div className="flex items-center gap-2.5">
-              <span className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full border ${
-                isHost 
-                  ? 'bg-brand-500/20 text-brand-300 border-brand-500/30' 
-                  : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30'
+      {/* Signature Figma Color Block Header Panel */}
+      <section className={`${isHost ? 'block-lime' : 'block-lilac'} rounded-3xl p-8 sm:p-12 border border-black/10 transition-all`}>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          <div className="space-y-4 max-w-xl">
+            <div className="flex items-center gap-2">
+              <span className={`eyebrow-mono text-[9px] px-3 py-1 rounded-full ${
+                isHost ? 'bg-black text-white' : 'bg-white text-black border border-black/15'
               }`}>
-                {isHost ? 'Event Host' : 'Event Guest'}
+                {isHost ? 'ORGANIZER / HOST' : 'ATTENDEE / GUEST'}
               </span>
-              <span className="text-xs text-slate-400 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-slate-500" />
+              <span className="caption-mono text-neutral-700 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5" />
                 {event.event_date}
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.04em] text-black leading-tight">
               {event.name}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pt-1">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-800 font-mono pt-1">
               <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-slate-500" />
-                <span>Expires in {event.retention_days} days</span>
+                <Clock className="w-4 h-4 text-black" />
+                <span>EXPIRES IN {event.retention_days} DAYS</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-slate-500" />
-                <span>{members.length} {members.length === 1 ? 'Attendee' : 'Attendees'}</span>
+                <Users className="w-4 h-4 text-black" />
+                <span>{members.length} {members.length === 1 ? 'ATTENDEE' : 'ATTENDEES'}</span>
               </div>
             </div>
           </div>
 
           {/* PIN Card for Host or Member */}
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-brand-500/30 flex flex-col items-center justify-center min-w-[220px]">
-            <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
-              <KeyRound className="w-3 h-3 text-brand-400" />
-              <span>Event Join PIN</span>
+          <div className="bg-white rounded-2xl p-5 border border-black/15 shadow-sm flex flex-col items-center justify-center min-w-[240px]">
+            <div className="eyebrow-mono text-[9px] text-neutral-500 mb-1 flex items-center gap-1">
+              <KeyRound className="w-3 h-3 text-black" />
+              <span>EVENT ACCESS PIN</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-2xl font-black text-brand-300 tracking-widest">
+            <div className="flex items-center gap-3 my-1">
+              <span className="font-mono text-3xl font-black text-black tracking-[0.2em]">
                 {event.pin_code}
               </span>
               <button
                 id="btn-event-copy-pin"
                 onClick={handleCopyPin}
                 title="Copy PIN"
-                className="p-1.5 rounded-lg bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 border border-brand-500/40 transition-colors"
+                className="btn-icon-circle w-9 h-9 border border-[#e5e5e5] hover:border-black"
               >
-                {copiedPin ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedPin ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-black" />}
               </button>
             </div>
-            <span className="text-[10px] text-slate-500 mt-1">
-              {copiedPin ? 'Copied!' : 'Share with attendees'}
+            <span className="caption-mono text-[10px] text-neutral-500">
+              {copiedPin ? 'COPIED TO CLIPBOARD' : 'SHARE WITH GUESTS'}
             </span>
           </div>
         </div>
+      </section>
 
-        {/* Ambient glow */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-brand-600/10 rounded-full blur-3xl pointer-events-none" />
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+      {/* Figma Pill Toggle Tabs per DESIGN.md (pricing-tab-default & pricing-tab-selected) */}
+      <div className="inline-flex p-1 bg-[#f5f5f7] border border-[#e5e5e5] rounded-full">
         <button
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors ${
+          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
             activeTab === 'overview'
-              ? 'bg-brand-600/20 text-brand-300 border border-brand-500/30'
-              : 'text-slate-400 hover:text-white'
+              ? 'bg-black text-white shadow-sm'
+              : 'text-neutral-600 hover:text-black'
           }`}
         >
           Event Overview
         </button>
         <button
           onClick={() => setActiveTab('members')}
-          className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${
+          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-2 ${
             activeTab === 'members'
-              ? 'bg-brand-600/20 text-brand-300 border border-brand-500/30'
-              : 'text-slate-400 hover:text-white'
+              ? 'bg-black text-white shadow-sm'
+              : 'text-neutral-600 hover:text-black'
           }`}
         >
           <span>Members</span>
-          <span className="px-1.5 py-0.2 rounded-full bg-slate-800 text-[10px] font-bold">
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
+            activeTab === 'members' ? 'bg-white/20 text-white' : 'bg-white text-black border border-[#e5e5e5]'
+          }`}>
             {members.length}
           </span>
         </button>
@@ -205,41 +204,41 @@ export const EventDetail = () => {
       {activeTab === 'overview' && (
         <div className="space-y-6">
           {/* Milestone 2 Readiness Info Box */}
-          <div className="glass-card p-6 rounded-2xl border border-dashed border-brand-500/30 flex flex-col md:flex-row items-center gap-5">
-            <div className="w-12 h-12 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 flex-shrink-0">
-              <Camera className="w-6 h-6" />
+          <div className="block-cream p-6 sm:p-8 rounded-3xl border border-black/10 flex flex-col md:flex-row items-center gap-6">
+            <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+              <Camera className="w-6 h-6 text-[#FFF8EE]" />
             </div>
             <div className="space-y-1 text-center md:text-left flex-1">
-              <h4 className="text-sm font-bold text-white">
+              <h4 className="text-base font-bold text-black tracking-tight">
                 Milestone 1 Active: Auth, Event Creation & PIN Flow Complete!
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-neutral-700 leading-relaxed font-normal">
                 You have successfully joined/created this event using EventSnap's secure PIN architecture. 
-                In <strong className="text-slate-200">Milestone 2</strong>, photo upload directly to AWS S3 and the interactive full event gallery will be added here.
+                In <strong className="font-semibold text-black">Milestone 2</strong>, photo upload directly to AWS S3 and interactive Rekognition face delivery will be activated in this gallery.
               </p>
             </div>
           </div>
 
           {/* Quick Details Card */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="glass-card p-4 rounded-xl">
-              <div className="text-[11px] font-medium text-slate-400 mb-1">Host Organizer</div>
-              <div className="text-sm font-bold text-white flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-brand-400" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div className="card-hairline p-5 space-y-1">
+              <span className="caption-mono block text-neutral-500">Host Organizer</span>
+              <div className="text-sm font-bold text-black flex items-center gap-2 pt-1">
+                <ShieldCheck className="w-4 h-4 text-black" />
                 <span>{event.host?.name || 'Organizer'}</span>
               </div>
             </div>
 
-            <div className="glass-card p-4 rounded-xl">
-              <div className="text-[11px] font-medium text-slate-400 mb-1">AWS Collection ID</div>
-              <div className="text-xs font-mono font-bold text-slate-300 truncate" title={event.rekognition_collection_id}>
+            <div className="card-hairline p-5 space-y-1">
+              <span className="caption-mono block text-neutral-500">AWS Rekognition Collection</span>
+              <div className="text-xs font-mono font-bold text-black truncate pt-1" title={event.rekognition_collection_id}>
                 {event.rekognition_collection_id}
               </div>
             </div>
 
-            <div className="glass-card p-4 rounded-xl">
-              <div className="text-[11px] font-medium text-slate-400 mb-1">Auto-Deletion Expiry</div>
-              <div className="text-xs font-bold text-amber-300">
+            <div className="card-hairline p-5 space-y-1">
+              <span className="caption-mono block text-neutral-500">Auto-Deletion Expiry</span>
+              <div className="text-xs font-mono font-bold text-black pt-1">
                 {new Date(event.expires_at).toLocaleDateString()}
               </div>
             </div>
@@ -249,44 +248,49 @@ export const EventDetail = () => {
 
       {/* Tab Content: Members */}
       {activeTab === 'members' && (
-        <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white">Event Attendees ({members.length})</h3>
-            <span className="text-xs text-slate-400">Joined via PIN</span>
+        <div className="card-hairline p-6 sm:p-8 space-y-6">
+          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-4">
+            <div>
+              <span className="eyebrow-mono block">Roster</span>
+              <h3 className="text-lg font-bold text-black tracking-tight">Event Attendees ({members.length})</h3>
+            </div>
+            <span className="caption-mono px-3 py-1 bg-[#f5f5f7] border border-[#e5e5e5] rounded-full text-black">
+              JOINED VIA PIN
+            </span>
           </div>
 
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-[#f0f0f0]">
             {members.map((member) => {
               const isMemberHost = member.user_id === event.host_id;
               return (
-                <div key={member.id} className="py-3 flex items-center justify-between">
+                <div key={member.id} className="py-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">
+                    <div className="w-9 h-9 rounded-full bg-[#f5f5f7] border border-[#e5e5e5] flex items-center justify-center text-xs font-bold text-black">
                       {member.user?.name ? member.user.name.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <div>
-                      <div className="text-xs font-semibold text-white flex items-center gap-2">
+                      <div className="text-xs font-semibold text-black flex items-center gap-2">
                         <span>{member.user?.name || 'Member'}</span>
                         {isMemberHost && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 font-bold uppercase">
+                          <span className="eyebrow-mono text-[8px] px-2 py-0.5 rounded-full bg-black text-white">
                             Host
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-slate-500">
+                      <div className="caption-mono text-[10px] text-neutral-500 mt-0.5">
                         Joined {new Date(member.joined_at).toLocaleDateString()}
                       </div>
                     </div>
                   </div>
 
-                  {/* Host can revoke access (Acceptance Criteria User Story 2) */}
+                  {/* Host can revoke access */}
                   {isHost && !isMemberHost && (
                     <button
                       onClick={() => handleRemoveMember(member.user_id)}
                       title="Revoke guest access"
-                      className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                      className="btn-icon-circle w-8 h-8 text-neutral-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-colors"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>
