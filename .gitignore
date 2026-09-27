@@ -62,3 +62,8 @@ backend/eventsnap.db
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Design documentation
+DESIGN.md
+design.md
+desgin.md
