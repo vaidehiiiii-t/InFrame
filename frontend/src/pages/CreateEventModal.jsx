@@ -66,57 +66,59 @@ export const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title={createdEvent ? "Event Created Successfully!" : "Create New Event"}>
+    <Modal isOpen={isOpen} onClose={handleClose} title={createdEvent ? "Event Created Successfully" : "Create New Event"}>
       {createdEvent ? (
         <div className="space-y-6 text-center py-2">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400">
-            <Sparkles className="w-8 h-8" />
-          </div>
-
-          <div>
-            <h4 className="text-xl font-bold text-white">{createdEvent.name}</h4>
-            <p className="text-xs text-slate-400 mt-1">
-              Share this 8-character PIN with your guests so they can join and view photos
-            </p>
-          </div>
-
-          {/* PIN Card */}
-          <div className="p-4 rounded-2xl bg-slate-900/90 border border-brand-500/30 relative group">
-            <div className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mb-1">
-              Event Join PIN
+          {/* Success Banner in Block Lime per DESIGN.md */}
+          <div className="block-lime rounded-2xl p-6 border border-black/10 text-center space-y-4">
+            <div className="w-12 h-12 mx-auto rounded-full bg-black text-white flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-[#D2F46E]" />
             </div>
-            <div className="flex items-center justify-center gap-3">
-              <span className="font-mono text-3xl font-extrabold tracking-widest text-brand-300">
-                {createdEvent.pin_code}
-              </span>
-              <button
-                id="btn-copy-pin"
-                onClick={copyPin}
-                title="Copy PIN"
-                className="p-2 bg-brand-600/30 hover:bg-brand-600/50 border border-brand-500/40 rounded-xl text-brand-200 transition-colors"
-              >
-                {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-              </button>
+
+            <div>
+              <h4 className="text-xl font-bold text-black tracking-tight">{createdEvent.name}</h4>
+              <p className="caption-mono text-neutral-800 mt-1">
+                Share this PIN with your attendees
+              </p>
             </div>
-            {copied && <span className="text-[11px] text-green-400 mt-1 block">Copied to clipboard!</span>}
+
+            <div className="bg-white rounded-xl p-4 border border-black/15 shadow-sm">
+              <div className="text-[10px] font-mono uppercase tracking-[0.1em] text-neutral-500 mb-1">
+                Event Access PIN
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <span className="font-mono text-3xl font-extrabold tracking-[0.2em] text-black">
+                  {createdEvent.pin_code}
+                </span>
+                <button
+                  id="btn-copy-pin"
+                  onClick={copyPin}
+                  title="Copy PIN"
+                  className="btn-icon-circle w-9 h-9 border border-[#e5e5e5] hover:border-black"
+                >
+                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-black" />}
+                </button>
+              </div>
+              {copied && <span className="text-[11px] text-emerald-700 font-medium mt-1.5 block">Copied to clipboard!</span>}
+            </div>
           </div>
 
-          <div className="text-xs text-slate-400 bg-slate-900/40 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+          <div className="text-xs text-neutral-600 bg-[#f5f5f7] p-3.5 rounded-xl border border-[#e5e5e5] flex items-center justify-between font-mono">
             <span>Photo Retention Period:</span>
-            <span className="font-semibold text-slate-200">{createdEvent.retention_days} days</span>
+            <span className="font-semibold text-black">{createdEvent.retention_days} days</span>
           </div>
 
           <div className="flex items-center gap-3 pt-2">
             <button
               onClick={handleClose}
-              className="flex-1 py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors"
+              className="btn-secondary flex-1 py-2 text-xs"
             >
               Done
             </button>
             <button
               id="btn-goto-created-event"
               onClick={handleViewEvent}
-              className="flex-1 py-2.5 px-4 gradient-btn text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md shadow-brand-500/20"
+              className="btn-primary flex-1 py-2 text-xs"
             >
               <span>View Event</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -124,16 +126,16 @@ export const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 text-black">
           {error && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-2.5 text-red-400 text-xs">
+            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-red-700 text-xs">
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
+            <label className="eyebrow-mono block mb-1.5">
               Event Name
             </label>
             <input
@@ -142,17 +144,17 @@ export const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Maya & Leo's Wedding, Tech Summit 2026"
-              className="w-full px-3.5 py-2.5 bg-slate-900/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+              placeholder="e.g. Annual Design Summit, Team Offsite"
+              className="input-figma"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">
+            <label className="eyebrow-mono block mb-1.5">
               Event Date
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500">
                 <Calendar className="w-4 h-4" />
               </div>
               <input
@@ -161,20 +163,20 @@ export const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
                 required
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-900/70 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+                className="input-figma pl-10"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label className="eyebrow-mono">
                 Photo Retention Period
               </label>
-              <span className="text-xs font-bold text-brand-400">{retentionDays} Days</span>
+              <span className="font-mono text-xs font-bold text-black">{retentionDays} Days</span>
             </div>
-            <div className="relative flex items-center gap-3">
-              <Clock className="w-4 h-4 text-slate-500 flex-shrink-0" />
+            <div className="relative flex items-center gap-3 py-1">
+              <Clock className="w-4 h-4 text-neutral-500 flex-shrink-0" />
               <input
                 id="input-create-event-retention"
                 type="range"
@@ -182,19 +184,19 @@ export const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
                 max="180"
                 value={retentionDays}
                 onChange={(e) => setRetentionDays(e.target.value)}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500"
+                className="w-full h-1.5 bg-[#e5e5e5] rounded-lg appearance-none cursor-pointer accent-black"
               />
             </div>
-            <p className="text-[11px] text-slate-500 mt-1.5">
-              Photos and face data will automatically be deleted after this period (max 180 days).
+            <p className="text-[11px] text-neutral-500 mt-1">
+              Photos will automatically be deleted from storage after this duration (max 180 days).
             </p>
           </div>
 
-          <div className="pt-3 flex items-center justify-end gap-3">
+          <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#f0f0f0]">
             <button
               type="button"
               onClick={handleClose}
-              className="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors"
+              className="btn-secondary text-xs py-2 px-4"
             >
               Cancel
             </button>
@@ -202,10 +204,10 @@ export const CreateEventModal = ({ isOpen, onClose, onEventCreated }) => {
               id="btn-create-event-submit"
               type="submit"
               disabled={isSubmitting}
-              className="py-2.5 px-5 gradient-btn text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 shadow-md shadow-brand-500/20 disabled:opacity-50 transition-all"
+              className="btn-primary text-xs py-2 px-5"
             >
               {isSubmitting ? (
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <span>Create Event & Generate PIN</span>
               )}

@@ -57,34 +57,34 @@ export const JoinEventModal = ({ isOpen, onClose, onEventJoined }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Join Event with PIN">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5 text-black">
         <div className="text-center">
-          <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 mb-3">
-            <KeyRound className="w-6 h-6" />
+          <div className="w-12 h-12 mx-auto rounded-full bg-[#f5f5f7] border border-[#e5e5e5] flex items-center justify-center text-black mb-3">
+            <KeyRound className="w-5 h-5" />
           </div>
-          <p className="text-xs text-slate-400">
-            Enter the 8-character PIN code provided by your event host to access the gallery
+          <p className="text-xs text-neutral-600 font-normal leading-relaxed max-w-xs mx-auto">
+            Enter the 8-character PIN code provided by your event organizer to access the gallery.
           </p>
         </div>
 
         {error && (
           <div className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs ${
             isRateLimited 
-              ? 'bg-amber-500/10 border-amber-500/20 text-amber-300' 
-              : 'bg-red-500/10 border-red-500/20 text-red-400'
+              ? 'bg-amber-50 border-amber-200 text-amber-900' 
+              : 'bg-red-50 border-red-200 text-red-800'
           }`}>
             {isRateLimited ? (
-              <ShieldAlert className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <ShieldAlert className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-700" />
             ) : (
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-600" />
             )}
             <span>{error}</span>
           </div>
         )}
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider text-center">
-            Event PIN Code
+          <label className="eyebrow-mono block text-center mb-2">
+            Event Access PIN
           </label>
           <input
             id="input-join-pin"
@@ -95,18 +95,18 @@ export const JoinEventModal = ({ isOpen, onClose, onEventJoined }) => {
             value={pinCode}
             onChange={handlePinChange}
             placeholder="e.g. 8K2M9PX7"
-            className="w-full text-center font-mono text-2xl tracking-[0.25em] font-bold py-3.5 bg-slate-900/90 border-2 border-slate-700 rounded-xl text-brand-300 placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all uppercase"
+            className="w-full text-center font-mono text-2xl tracking-[0.25em] font-bold py-3.5 bg-white border border-[#e5e5e5] rounded-xl text-black placeholder:text-neutral-300 focus:outline-none focus:border-black focus:ring-2 focus:ring-black uppercase transition-all"
           />
-          <p className="text-[11px] text-slate-500 text-center mt-2">
-            Rate-limited for event security (max 5 attempts/hour)
+          <p className="caption-mono text-center text-neutral-500 mt-2">
+            Rate-limited for event security (max 5 attempts/hr)
           </p>
         </div>
 
-        <div className="pt-2 flex items-center justify-end gap-3">
+        <div className="pt-3 flex items-center justify-end gap-3 border-t border-[#f0f0f0]">
           <button
             type="button"
             onClick={handleClose}
-            className="py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors"
+            className="btn-secondary text-xs py-2 px-4"
           >
             Cancel
           </button>
@@ -114,10 +114,10 @@ export const JoinEventModal = ({ isOpen, onClose, onEventJoined }) => {
             id="btn-join-pin-submit"
             type="submit"
             disabled={isSubmitting || pinCode.length < 6}
-            className="py-2.5 px-5 gradient-btn text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="btn-primary text-xs py-2 px-5 inline-flex items-center gap-1.5"
           >
             {isSubmitting ? (
-              <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
               <>
                 <span>Join Event</span>

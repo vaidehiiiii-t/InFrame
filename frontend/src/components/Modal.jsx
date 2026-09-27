@@ -19,21 +19,22 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div 
-        className="w-full max-w-lg glass-panel rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+        className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#e5e5e5]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-900/40">
-          <h3 className="text-base font-bold text-white">{title}</h3>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e5e5] bg-white">
+          <h3 className="text-base font-bold text-black tracking-tight">{title}</h3>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-500 hover:text-black hover:bg-[#f5f5f7] transition-colors"
+            aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
-        <div className="p-6">
+        <div className="p-6 text-black">
           {children}
         </div>
       </div>
