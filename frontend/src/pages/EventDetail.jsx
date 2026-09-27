@@ -12,11 +12,14 @@ import {
   ShieldCheck, 
   Camera, 
   AlertCircle,
-  Database,
-  Sparkles
+  Sparkles,
+  UploadCloud,
+  ImageIcon
 } from 'lucide-react';
 import { eventsApi } from '../api/events';
 import { useAuth } from '../context/AuthContext';
+import { PhotoGallery } from '../components/PhotoGallery';
+import { PhotoUploadZone } from '../components/PhotoUploadZone';
 
 export const EventDetail = () => {
   const { eventId } = useParams();
@@ -25,10 +28,12 @@ export const EventDetail = () => {
 
   const [event, setEvent] = useState(null);
   const [members, setMembers] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPhotosLoading, setIsPhotosLoading] = useState(false);
   const [error, setError] = useState('');
   const [copiedPin, setCopiedPin] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'members'
+  const [activeTab, setActiveTab] = useState('gallery'); // 'gallery' | 'upload' | 'overview' | 'members'
 
   const fetchEventData = async () => {
     try {
@@ -46,8 +51,21 @@ export const EventDetail = () => {
     }
   };
 
+  const fetchPhotos = async () => {
+    try {
+      setIsPhotosLoading(true);
+      const photosData = await eventsApi.getPhotos(eventId);
+      setPhotos(photosData);
+    } catch (err) {
+      console.error('Failed to load photos:', err);
+    } finally {
+      setIsPhotosLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchEventData();
+    fetchPhotos();
   }, [eventId]);
 
   const handleCopyPin = () => {
@@ -66,6 +84,20 @@ export const EventDetail = () => {
     } catch (err) {
       alert(err.response?.data?.detail || 'Failed to remove member.');
     }
+  };
+
+  const handleDeletePhoto = async (photoId) => {
+    try {
+      await eventsApi.deletePhoto(eventId, photoId);
+      setPhotos((prev) => prev.filter((p) => p.id !== photoId));
+    } catch (err) {
+      alert(err.response?.data?.detail || 'Failed to delete photo.');
+    }
+  };
+
+  const handlePhotosUploaded = () => {
+    fetchPhotos();
+    setActiveTab('gallery');
   };
 
   if (isLoading) {
@@ -102,8 +134,8 @@ export const EventDetail = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-      {/* Back button */}
-      <div>
+      {/* Top Bar with Back Navigation */}
+      <div className="flex items-center justify-between">
         <Link
           to="/"
           className="btn-secondary text-xs py-1.5 px-4 inline-flex items-center gap-1.5"
@@ -111,6 +143,10 @@ export const EventDetail = () => {
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Dashboard</span>
         </Link>
+
+        <span className="caption-mono px-3 py-1 rounded-full bg-[#f5f5f7] border border-[#e5e5e5] text-neutral-600">
+          MILESTONE 2: GALLERY LIVE
+        </span>
       </div>
 
       {/* Signature Figma Color Block Header Panel */}
@@ -142,6 +178,20 @@ export const EventDetail = () => {
                 <Users className="w-4 h-4 text-black" />
                 <span>{members.length} {members.length === 1 ? 'ATTENDEE' : 'ATTENDEES'}</span>
               </div>
+              <div className="flex items-center gap-1.5">
+                <ImageIcon className="w-4 h-4 text-black" />
+                <span>{photos.length} {photos.length === 1 ? 'PHOTO' : 'PHOTOS'}</span>
+              </div>
+            </div>
+
+            <div className="pt-2 flex items-center gap-3">
+              <button
+                onClick={() => setActiveTab('upload')}
+                className="btn-primary text-xs py-2 px-5 inline-flex items-center gap-1.5"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Upload Photos</span>
+              </button>
             </div>
           </div>
 
@@ -171,21 +221,50 @@ export const EventDetail = () => {
         </div>
       </section>
 
-      {/* Figma Pill Toggle Tabs per DESIGN.md (pricing-tab-default & pricing-tab-selected) */}
-      <div className="inline-flex p-1 bg-[#f5f5f7] border border-[#e5e5e5] rounded-full">
+      {/* Figma Pill Toggle Tabs for Event Navigation */}
+      <div className="inline-flex p-1 bg-[#f5f5f7] border border-[#e5e5e5] rounded-full overflow-x-auto max-w-full">
+        <button
+          onClick={() => setActiveTab('gallery')}
+          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+            activeTab === 'gallery'
+              ? 'bg-black text-white shadow-sm'
+              : 'text-neutral-600 hover:text-black'
+          }`}
+        >
+          <span>Photos Gallery</span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
+            activeTab === 'gallery' ? 'bg-white/20 text-white' : 'bg-white text-black border border-[#e5e5e5]'
+          }`}>
+            {photos.length}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('upload')}
+          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+            activeTab === 'upload'
+              ? 'bg-black text-white shadow-sm'
+              : 'text-neutral-600 hover:text-black'
+          }`}
+        >
+          <UploadCloud className="w-3.5 h-3.5" />
+          <span>Upload</span>
+        </button>
+
         <button
           onClick={() => setActiveTab('overview')}
-          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
+          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
             activeTab === 'overview'
               ? 'bg-black text-white shadow-sm'
               : 'text-neutral-600 hover:text-black'
           }`}
         >
-          Event Overview
+          Overview & Architecture
         </button>
+
         <button
           onClick={() => setActiveTab('members')}
-          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-2 ${
+          className={`px-5 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap ${
             activeTab === 'members'
               ? 'bg-black text-white shadow-sm'
               : 'text-neutral-600 hover:text-black'
@@ -200,26 +279,42 @@ export const EventDetail = () => {
         </button>
       </div>
 
-      {/* Tab Content: Overview */}
+      {/* Tab 1: Photos Gallery */}
+      {activeTab === 'gallery' && (
+        <PhotoGallery
+          photos={photos}
+          isLoading={isPhotosLoading}
+          onDeletePhoto={handleDeletePhoto}
+          onOpenUpload={() => setActiveTab('upload')}
+          isHost={isHost}
+        />
+      )}
+
+      {/* Tab 2: Upload Photos */}
+      {activeTab === 'upload' && (
+        <PhotoUploadZone
+          eventId={eventId}
+          onPhotosUploaded={handlePhotosUploaded}
+        />
+      )}
+
+      {/* Tab 3: Overview & Architecture */}
       {activeTab === 'overview' && (
         <div className="space-y-6">
-          {/* Milestone 2 Readiness Info Box */}
           <div className="block-cream p-6 sm:p-8 rounded-3xl border border-black/10 flex flex-col md:flex-row items-center gap-6">
             <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
               <Camera className="w-6 h-6 text-[#FFF8EE]" />
             </div>
             <div className="space-y-1 text-center md:text-left flex-1">
               <h4 className="text-base font-bold text-black tracking-tight">
-                Milestone 1 Active: Auth, Event Creation & PIN Flow Complete!
+                Milestone 2 Active: Photo Upload & Gallery Complete!
               </h4>
               <p className="text-xs text-neutral-700 leading-relaxed font-normal">
-                You have successfully joined/created this event using EventSnap's secure PIN architecture. 
-                In <strong className="font-semibold text-black">Milestone 2</strong>, photo upload directly to AWS S3 and interactive Rekognition face delivery will be activated in this gallery.
+                Attendees can upload photos with SHA-256 duplicate detection, view the shared event gallery, download full-resolution pictures, and cycle through the lightbox. In <strong className="font-semibold text-black">Milestone 3</strong>, face rekognition indexing will be integrated.
               </p>
             </div>
           </div>
 
-          {/* Quick Details Card */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div className="card-hairline p-5 space-y-1">
               <span className="caption-mono block text-neutral-500">Host Organizer</span>
@@ -246,7 +341,7 @@ export const EventDetail = () => {
         </div>
       )}
 
-      {/* Tab Content: Members */}
+      {/* Tab 4: Members */}
       {activeTab === 'members' && (
         <div className="card-hairline p-6 sm:p-8 space-y-6">
           <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-4">
