@@ -3,67 +3,145 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-canvas: #ffffff;
+    --color-inverse-canvas: #000000;
+    --color-primary: #000000;
+    --color-on-primary: #ffffff;
+    --color-ink: #000000;
+    --color-inverse-ink: #ffffff;
+    --color-surface-soft: #f5f5f7;
+    --color-hairline: #e5e5e5;
+    --color-hairline-soft: #f0f0f0;
+  }
+
   body {
-    background-color: #090D16;
-    color: #F3F4F6;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 340;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings with tight negative tracking per DESIGN.md */
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: -0.03em;
   }
 }
 
-/* Glassmorphism card utilities */
-.glass-panel {
-  background: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+@layer components {
+  /* Button Primary: Black pill, white text */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-black text-white px-6 py-2.5 text-[15px] font-medium transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none shadow-none;
+  }
+
+  /* Button Secondary: White pill, black text with hairline border */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-white text-black border border-hairline px-6 py-2 text-[15px] font-medium transition-all duration-150 hover:bg-[#fafafa] hover:border-black active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Button Magenta Promo */
+  .btn-magenta {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[#FF24BD] text-white px-5 py-2 text-[14px] font-medium transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  /* Circular Icon Button */
+  .btn-icon-circle {
+    @apply w-10 h-10 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-black flex items-center justify-center transition-colors border border-transparent;
+  }
+
+  .btn-icon-circle-inverse {
+    @apply w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors;
+  }
+
+  /* Pill Toggle (Pricing/Filter Tabs) */
+  .pill-tab {
+    @apply px-4 py-2 rounded-full text-xs font-medium transition-colors;
+  }
+  .pill-tab-active {
+    @apply bg-black text-white;
+  }
+  .pill-tab-inactive {
+    @apply bg-transparent text-black hover:bg-[#f5f5f7];
+  }
+
+  /* Color Block Sections */
+  .block-lime {
+    background-color: #D2F46E;
+    color: #000000;
+  }
+
+  .block-lilac {
+    background-color: #E4D4F4;
+    color: #000000;
+  }
+
+  .block-cream {
+    background-color: #FFF8EE;
+    color: #000000;
+  }
+
+  .block-mint {
+    background-color: #B2F1DE;
+    color: #000000;
+  }
+
+  .block-pink {
+    background-color: #FFCEE8;
+    color: #000000;
+  }
+
+  .block-coral {
+    background-color: #FFC2A2;
+    color: #000000;
+  }
+
+  .block-navy {
+    background-color: #16162C;
+    color: #ffffff;
+  }
+
+  /* Hairline Card */
+  .card-hairline {
+    @apply bg-white border border-[#e5e5e5] rounded-3xl p-6 transition-all duration-200;
+  }
+
+  /* Text Input: White canvas with clean hairline border and black focus ring */
+  .input-figma {
+    @apply w-full bg-white text-black border border-[#e5e5e5] rounded-lg px-3.5 py-3 text-sm placeholder:text-neutral-400 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors;
+  }
+
+  /* Eyebrow Label: Mono uppercase with positive tracking */
+  .eyebrow-mono {
+    @apply font-mono text-[11px] uppercase tracking-[0.08em] font-medium text-black;
+  }
+
+  /* Caption Mono */
+  .caption-mono {
+    @apply font-mono text-[10px] uppercase tracking-[0.1em] text-neutral-500;
+  }
 }
 
-.glass-card {
-  background: rgba(22, 30, 49, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-card:hover {
-  background: rgba(30, 41, 65, 0.75);
-  border-color: rgba(139, 92, 246, 0.35);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(139, 92, 246, 0.15);
-}
-
-/* Gradient accents */
-.gradient-text {
-  background: linear-gradient(135deg, #A78BFA 0%, #EC4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gradient-btn {
-  background: linear-gradient(135deg, #7C3AED 0%, #6366F1 100%);
-  transition: all 0.2s ease;
-}
-
-.gradient-btn:hover {
-  background: linear-gradient(135deg, #6D28D9 0%, #4F46E5 100%);
-  box-shadow: 0 4px 20px -2px rgba(124, 58, 237, 0.4);
-}
-
-/* Custom Scrollbar */
+/* Custom Scrollbar for clean white Figma editor look */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090D16;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1F2937;
-  border-radius: 4px;
+  background: #d4d4d8;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: #a1a1aa;
 }
